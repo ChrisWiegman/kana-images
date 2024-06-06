@@ -17,9 +17,12 @@ type Image struct {
 var imageBasePath = "../images/"
 var dockerOrg = "chriswiegman/kana"
 var images = []Image{}
+var Stdout io.Writer = os.Stdout
+var Stderr io.Writer = os.Stderr
 
 func main() {
 	images := getImages(imageBasePath, images)
+
 	for _, image := range images {
 		tag := fmt.Sprintf("%s:%s", dockerOrg, image.Tag)
 
@@ -27,12 +30,6 @@ func main() {
 			{"buildx", "create", "--use"},
 			{"buildx", "build", "--push", "--platform", "linux/amd64,linux/386,linux/arm/v6,linux/arm/v7,linux/arm64", "-t", tag, filepath.Join(imageBasePath, image.Src)},
 		}
-
-		// Stdout is the io.Writer to which executed commands write standard output.
-		var Stdout io.Writer = os.Stdout
-
-		// Stderr is the io.Writer to which executed commands write standard error.
-		var Stderr io.Writer = os.Stderr
 
 		for _, dockerCommand := range dockerCommands {
 			cmd := exec.Command("docker", dockerCommand...)
@@ -49,6 +46,7 @@ func main() {
 
 func getImages(directory string, images []Image) []Image {
 	items, _ := os.ReadDir(directory)
+
 	for _, item := range items {
 		if item.IsDir() {
 			images = getImages(filepath.Join(directory, item.Name()), images)
