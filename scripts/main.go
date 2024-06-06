@@ -24,7 +24,7 @@ func main() {
 		tag := fmt.Sprintf("%s:%s", dockerOrg, image.Tag)
 
 		dockerCommands := [][]string{
-			{"buildx", "create", "--name", tag, "--use"},
+			{"buildx", "create", "--use"},
 			{"buildx", "build", "--push", "--platform", "linux/amd64,linux/arm64", "-t", tag, filepath.Join(imageBasePath, image.Src)},
 		}
 
