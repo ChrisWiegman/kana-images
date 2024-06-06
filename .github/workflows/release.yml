@@ -17,12 +17,6 @@ jobs:
         with:
           go-version: '1.22'
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action
-        with:
-          images: my-docker-hub-namespace/my-docker-hub-repository
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
