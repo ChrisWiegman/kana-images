@@ -19,15 +19,15 @@ var dockerOrg = "chriswiegman/kana"
 var images = []Image{
 	{
 		Src: "wordpress/cli/php8.1",
-		Tag: "cli-php8.1",
+		Tag: "wp-cli-php8.1",
 	},
 	{
 		Src: "wordpress/cli/php8.2",
-		Tag: "cli-php8.2",
+		Tag: "wp-cli-php8.2",
 	},
 	{
 		Src: "wordpress/cli/php8.3",
-		Tag: "cli-php8.3",
+		Tag: "wp-cli-php8.3",
 	}}
 
 func main() {
