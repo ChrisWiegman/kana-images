@@ -25,7 +25,7 @@ func main() {
 
 		dockerCommands := [][]string{
 			{"buildx", "create", "--use"},
-			{"buildx", "build", "--push", "--platform", "linux/amd64,linux/arm64", "-t", tag, filepath.Join(imageBasePath, image.Src)},
+			{"buildx", "build", "--push", "--platform", "linux/amd64,linux/386,linux/arm/v6", "-t", tag, filepath.Join(imageBasePath, image.Src)},
 		}
 
 		// Stdout is the io.Writer to which executed commands write standard output.
