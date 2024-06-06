@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 )
 
 type Image struct {
@@ -15,22 +16,10 @@ type Image struct {
 
 var imageBasePath = "../images/"
 var dockerOrg = "chriswiegman/kana"
-
-var images = []Image{
-	{
-		Src: "wordpress/cli/php8.1",
-		Tag: "wp-cli-php8.1",
-	},
-	{
-		Src: "wordpress/cli/php8.2",
-		Tag: "wp-cli-php8.2",
-	},
-	{
-		Src: "wordpress/cli/php8.3",
-		Tag: "wp-cli-php8.3",
-	}}
+var images = []Image{}
 
 func main() {
+	images := getImages(imageBasePath, images)
 	for _, image := range images {
 		tag := fmt.Sprintf("%s:%s", dockerOrg, image.Tag)
 
@@ -56,4 +45,22 @@ func main() {
 			}
 		}
 	}
+}
+
+func getImages(directory string, images []Image) []Image {
+	items, _ := os.ReadDir(directory)
+	for _, item := range items {
+		if item.IsDir() {
+			images = getImages(filepath.Join(directory, item.Name()), images)
+		} else {
+			tag := strings.Replace(
+				strings.Replace(directory, imageBasePath, "", 1),
+				"/", "-", -1)
+
+			image := Image{directory, tag}
+			images = append(images, image)
+		}
+	}
+
+	return images
 }
