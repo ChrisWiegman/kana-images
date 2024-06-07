@@ -22,6 +22,7 @@ var Stderr io.Writer = os.Stderr
 
 func main() {
 	images := getImages(imageBasePath, images)
+	os.Exit(0)
 
 	for _, image := range images {
 		tag := fmt.Sprintf("%s:%s", dockerOrg, image.Tag)
@@ -51,12 +52,14 @@ func getImages(directory string, images []Image) []Image {
 		if item.IsDir() {
 			images = getImages(filepath.Join(directory, item.Name()), images)
 		} else {
-			tag := strings.Replace(
-				strings.Replace(directory, imageBasePath, "", 1),
-				"/", "-", -1)
+			if item.Name() == "Dockerfile" {
+				tag := strings.Replace(
+					strings.Replace(directory, imageBasePath, "", 1),
+					"/", "-", -1)
 
-			image := Image{directory, tag}
-			images = append(images, image)
+				image := Image{directory, tag}
+				images = append(images, image)
+			}
 		}
 	}
 
