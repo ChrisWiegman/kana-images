@@ -22,7 +22,6 @@ var Stderr io.Writer = os.Stderr
 
 func main() {
 	images := getImages(imageBasePath, images)
-	os.Exit(0)
 
 	for _, image := range images {
 		tag := fmt.Sprintf("%s:%s", dockerOrg, image.Tag)
